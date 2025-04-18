@@ -1,10 +1,10 @@
 const atk_ops =
 [
-  "Striker",   "Sledge",    "Thatcher", "Ash",      "Thermite", "Twitch",   "Montagne",
+  "Striker",   "Sledge",    "Thatcher", "Ash",      "Thermite", "Twitch",     "Montagne",
   "Glaz",      "Fuze",      "Blitz",    "IQ",       "Buck",     "Blackbeard", "Capitao",
-  "Hibana",    "Jackal",    "Ying",     "Zofia",    "Dokkaebi", "Lion",     "Finka",
-  "Maverick",  "Nomad",     "Gridlock", "Nokk",     "Amaru",    "Kali",     "Iana",
-  "Ace",       "Zero",      "Flores",   "Osa",      "Sens",     "Grim",     "Brava",
+  "Hibana",    "Jackal",    "Ying",     "Zofia",    "Dokkaebi", "Lion",       "Finka",
+  "Maverick",  "Nomad",     "Gridlock", "Nokk",     "Amaru",    "Kali",       "Iana",
+  "Ace",       "Zero",      "Flores",   "Osa",      "Sens",     "Grim",       "Brava",
   "Ram",       "Deimos",    "Rauora"
 ];
 
