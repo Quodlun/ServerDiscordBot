@@ -2,6 +2,9 @@ import { BotClient } from "@client"
 import { ChatInputCommandInteraction } from "discord.js"
 import { SlashCommandBuilder } from "@discordjs/builders"
 import { atk_ops, def_ops } from "@data/ops";
+import { player_id } from "@data/memberDiscordId";
+
+
 
 function randomOperator ( side: any )
 {
@@ -22,6 +25,13 @@ function randomOperator ( side: any )
     default:
       break;
   }
+}
+
+function randomPlayer ()
+{
+  var random_num;
+  random_num = Math.floor ( ( Math.random () * 10000 ) % player_id.length);
+  return player_id [ random_num ];
 }
 
 export default
@@ -82,18 +92,37 @@ export default
 
       case "team":
         await interaction.reply ( `Rolling 5 operators for ${ interaction.options.getString ( "side" )?.toUpperCase () }` );
-        console.log ( `[INFO] User: "${ interaction.user.username }" rolling 5 operators for side "${ interaction.options.getString ( "side" )?.toUpperCase () }"` );
+        console.log ( `[INFO] User: "${ interaction.user.username }" rolling 5 operators for side "${ interaction.options.getString ( "side" )?.toUpperCase () }"\n` );
 
         const operators = new Set < any > ();
+        const players = new Set < any > ();
 
         while ( operators.size < 5 )
         {
           operators.add ( randomOperator ( interaction.options.getString ( "side" ) ) );
         }
 
-        const operatorList = Array.from ( operators ).join ( "\n" );
-        await interaction.editReply ( `Team operator rolling result:\n${ operatorList }` );
-        console.log ( `[INFO] Roll result:\n${ operatorList }` );
+        while ( players.size < 5 )
+        {
+          players.add ( randomPlayer () );
+        }
+
+        // 將 players 和 operators 轉換為陣列
+        const playerArray = Array.from(players);
+        const operatorArray = Array.from(operators);
+
+        // 將玩家與幹員配對並格式化為字串
+        const resultList = playerArray.map
+        ( ( player, index ) =>
+          {
+            const operator = operatorArray [ index ];
+            return `<@${ player }>: ${ operator }`;
+          }
+        ).join( "\n" );
+
+        // 使用 interaction.reply 輸出結果
+        await interaction.editReply(`Team operator rolling result:\n${resultList}`);
+        console.log(`[INFO] Roll result:\n${resultList}`);
 
         break;
 
