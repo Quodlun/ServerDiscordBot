@@ -1,7 +1,7 @@
 import { BotClient } from "@client"
 import { ChatInputCommandInteraction } from "discord.js"
 import { SlashCommandBuilder } from "@discordjs/builders"
-import user_id from "@data/discordMember";
+import { user_id } from "@data/memberDiscordId";
 
 
 export default
