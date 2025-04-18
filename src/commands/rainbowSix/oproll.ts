@@ -31,9 +31,27 @@ export default
     .setDescription ( 'Pick an operator to play.' )
 
     .addStringOption
-    (Option => Option.setName("side")
-      .setDescription("Select which side to roll.")
-      .setRequired(true)
+    ( Option => Option.setName ("mode")
+      .setDescription ( "Roll for team or solo?" )
+      .setRequired ( true )
+      .addChoices
+      (
+        {
+          name: "Solo",
+          value: "solo"
+        },
+
+        {
+          name: "Team",
+          value: "team"
+        },
+      )
+    )
+
+    .addStringOption
+    ( Option => Option.setName ( "side" )
+      .setDescription ( "Select which side to roll." )
+      .setRequired ( true )
       .addChoices
       (
         {
@@ -48,13 +66,42 @@ export default
       )
     ),
 
-  async execute(_client: BotClient, interaction: ChatInputCommandInteraction) 
+  async execute( _client: BotClient, interaction: ChatInputCommandInteraction ) 
   {
-    await interaction.reply ( `Rolling operator at ${ interaction.options.getString ( "side" )?.toUpperCase () }` );
-    console.log ( `[INFO] User: "${ interaction.user.username }" rolling operator at side "${ interaction.options.getString ( "side" )?.toUpperCase () }"` );
-    const operator = randomOperator ( interaction.options.getString ( "side" ) );
+    switch ( interaction.options.getString ( "mode" ) )
+    {
+      case "solo":
+        await interaction.reply ( `Rolling operator at ${ interaction.options.getString ( "side" )?.toUpperCase () }` );
+        console.log ( `[INFO] User: "${ interaction.user.username }" rolling operator at side "${ interaction.options.getString ( "side" )?.toUpperCase () }"` );
+        const operator = randomOperator ( interaction.options.getString ( "side" ) );
 
-    await interaction.editReply ( `Operator rolling result: ${ operator }` );
-    console.log ( `[INFO] Roll result: ${ operator }` );
+        await interaction.editReply ( `Operator rolling result: ${ operator }` );
+        console.log ( `[INFO] Roll result: ${ operator }` );
+
+        break;
+
+      case "team":
+        await interaction.reply ( `Rolling 5 operators for ${ interaction.options.getString ( "side" )?.toUpperCase () }` );
+        console.log ( `[INFO] User: "${ interaction.user.username }" rolling 5 operators for side "${ interaction.options.getString ( "side" )?.toUpperCase () }"` );
+
+        const operators = new Set < any > ();
+
+        while ( operators.size < 5 )
+        {
+          operators.add ( randomOperator ( interaction.options.getString ( "side" ) ) );
+        }
+
+        const operatorList = Array.from ( operators ).join ( ", " );
+        await interaction.editReply ( `Team operator rolling result: ${ operatorList }` );
+        console.log ( `[INFO] Roll result: ${ operatorList }` );
+
+        break;
+
+      default:
+        await interaction.reply("Invalid mode selected.");
+        console.error("[ERROR] Invalid mode provided.");
+
+        break;
+    }
   }
 };
