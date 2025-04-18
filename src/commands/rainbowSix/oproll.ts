@@ -50,7 +50,11 @@ export default
 
   async execute(_client: BotClient, interaction: ChatInputCommandInteraction) 
   {
+    await interaction.reply ( `Rolling operator at ${ interaction.options.getString ( "side" )?.toUpperCase () }` );
+    console.log ( `[INFO] User: "${ interaction.user.username }" rolling operator at side "${ interaction.options.getString ( "side" )?.toUpperCase () }"` );
     const operator = randomOperator ( interaction.options.getString ( "side" ) );
-    await interaction.reply ( `Operator: ${ operator }` );
+
+    await interaction.editReply ( `Operator rolling result: ${ operator }` );
+    console.log ( `[INFO] Roll result: ${ operator }` );
   }
 };
