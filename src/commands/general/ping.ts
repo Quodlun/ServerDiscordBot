@@ -1,4 +1,4 @@
-import { BotClient } from "@/client"
+import { BotClient } from "@client"
 import { ChatInputCommandInteraction } from "discord.js"
 import { SlashCommandBuilder } from "@discordjs/builders"
 

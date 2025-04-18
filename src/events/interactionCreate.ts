@@ -1,4 +1,4 @@
-import { BotClient } from "@/client"
+import { BotClient } from "@client"
 import { Events, Interaction, MessageFlags } from "discord.js"
 
 export default

@@ -1,4 +1,4 @@
-import { BotClient } from "@/client"
+import { BotClient } from "@client"
 import { Client, Events } from "discord.js"
 
 module.exports =

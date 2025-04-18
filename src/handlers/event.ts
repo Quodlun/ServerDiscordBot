@@ -1,4 +1,4 @@
-import { BotClient } from "@/client"
+import { BotClient } from "@client"
 import path from "path"
 import fs from "fs"
 

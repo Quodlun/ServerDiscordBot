@@ -1,6 +1,7 @@
-console.log ( "Running in:", __dirname );
+import "./utils/moduleAlias"
+console.log("Running in:", __dirname);
 
-import client from "./client"
-import config from "./config"
+import client from "@client"
+import config from "@config"
 
-client.run ( config.discordToken! );
+client.run(config.discordToken!);
