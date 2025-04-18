@@ -1,26 +1,7 @@
 import { BotClient } from "@/client"
 import { ChatInputCommandInteraction } from "discord.js"
 import { SlashCommandBuilder } from "@discordjs/builders"
-
-var atk_ops = 
-[
-  "Striker",   "Sledge",    "Thatcher", "Ash",      "Thermite", "Twitch",   "Montagne",
-  "Glaz",      "Fuze",      "Blitz",    "IQ",       "Buck",     "Blackbeard", "Capitao",
-  "Hibana",    "Jackal",    "Ying",     "Zofia",    "Dokkaebi", "Lion",     "Finka",
-  "Maverick",  "Nomad",     "Gridlock", "Nokk",     "Amaru",    "Kali",     "Iana",
-  "Ace",       "Zero",      "Flores",   "Osa",      "Sens",     "Grim",     "Brava",
-  "Ram",       "Deimos",    "Rauora"
-];
-
-var def_ops = 
-[
-  "Sentry",  "Smoke",    "Mute",        "Castle", "Pulse", "Doc",      "Rook",
-  "Kapkan",  "Tachanka", "Jäger",       "Bandit", "Frost", "Valkyrie", "Caveira",
-  "Echo",    "Mira",     "Lesion",      "Ela",    "Vigil", "Maestro",  "Alibi",
-  "Clash",   "Kaid",     "Mozzie",      "Warden", "Goyo",  "Wamai",    "Oryx",
-  "Melusi",  "Aruni",    "Thunderbird", "Thorn",  "Azami", "Solis",    "Fenrir",
-  "Tubarão", "Skopós"
-]
+import { atk_ops, def_ops } from "@/data/ops";
 
 export default
 {
