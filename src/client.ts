@@ -35,7 +35,7 @@ class BotClient extends Client
     await this.login ( token ).then
     ( () =>
       {
-        console.log ( "Bot is online!" );
+        console.log ( "[INFO] Bot online" );
       }
     );
   }
