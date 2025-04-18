@@ -91,9 +91,9 @@ export default
           operators.add ( randomOperator ( interaction.options.getString ( "side" ) ) );
         }
 
-        const operatorList = Array.from ( operators ).join ( ", " );
-        await interaction.editReply ( `Team operator rolling result: ${ operatorList }` );
-        console.log ( `[INFO] Roll result: ${ operatorList }` );
+        const operatorList = Array.from ( operators ).join ( "\n" );
+        await interaction.editReply ( `Team operator rolling result:\n${ operatorList }` );
+        console.log ( `[INFO] Roll result:\n${ operatorList }` );
 
         break;
 
