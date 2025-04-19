@@ -2,10 +2,8 @@ import { BotClient } from "@client";
 import { ChatInputCommandInteraction } from "discord.js";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import axios from "axios";
-import { config } from "dotenv";
+import { config } from "@config";
 import https from "https";
-
-config(); // 載入 .env 檔案中的環境變數
 
 export default {
   data: new SlashCommandBuilder()
@@ -14,8 +12,8 @@ export default {
 
   async execute(_client: BotClient, interaction: ChatInputCommandInteraction) {
     try {
-      const apiUrl = "https://localhost:25560/api/v2/server/status";
-      const apiKey = process.env.MCSS_API_KEY; // 從環境變數讀取 API 金鑰
+      const apiUrl = "https://1.163.93.119:25560/api/v2/server/status";
+      const apiKey = config.mcssApiKey; // 從環境變數讀取 API 金鑰
 
       if (!apiKey) {
         throw new Error("API key is missing. Please set MCSS_API_KEY in your .env file.");
