@@ -14,7 +14,7 @@ export default {
 
   async execute(_client: BotClient, interaction: ChatInputCommandInteraction) {
     try {
-      const apiUrl = "https://1.163.93.119:25560/api/v2/server/status";
+      const apiUrl = "https://localhost:25560/api/v2/server/status";
       const apiKey = process.env.MCSS_API_KEY; // 從環境變數讀取 API 金鑰
 
       if (!apiKey) {
