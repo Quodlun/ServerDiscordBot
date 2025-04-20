@@ -2,6 +2,7 @@ import { BotClient } from "@client";
 import { ChatInputCommandInteraction } from "discord.js";
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { config } from "@config";
+import { fetchIp } from "@data/fetchIp";
 import axios from "axios";
 import https from "https";
 
@@ -16,7 +17,8 @@ export default
     console.log ( `[INFO] User: ${ interaction.user.tag } require fetching server status from MCSS API...` );
     try
     {
-      const apiUrl = `https://1.163.93.119:25560/api/v2/servers/${ config.mcssServerId }`;
+      let ip = "1.163.93.119" //await fetchIp ();
+      const apiUrl = `https://api.mcsrvstat.us/3/1.163.93.119`;
 
       if ( !config.mcssApiKey )
       {
@@ -44,26 +46,28 @@ export default
 
       const respond = response.data;
       let serverStatus;
-
-      switch ( respond.status )
+      
+      switch ( respond.online )
       {
-        case 1:
+        case true:
           serverStatus = "Online";
           break;
 
-        case 2:
+        case false:
           serverStatus = "Offline";
           break;
 
         default:
           break;
-      }
+      };
 
       const statusMessage = 
       `
-        > Server Name: ${ respond.name }
-        > Server Type: ${ respond.type }
+        > Server IP / Port: ${ respond.ip }:${ respond.port }
+        > Server Version: ${ respond.version }
         > Server Status: ${ serverStatus }
+        > Server Type: ${ respond.software }
+        > Server Players: ${ respond.players.online }/${ respond.players.max }
       `
     /*  `
         
