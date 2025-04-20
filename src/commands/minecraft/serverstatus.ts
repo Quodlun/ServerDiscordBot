@@ -17,8 +17,7 @@ export default
     console.log ( `[INFO] User: ${ interaction.user.tag } require fetching server status from MCSS API...` );
     try
     {
-      let ip = "1.163.93.119" //await fetchIp ();
-      const apiUrl = `https://api.mcsrvstat.us/3/1.163.93.119`;
+      const apiUrl = `https://api.mcsrvstat.us/3/192.168.31.23`;
 
       if ( !config.mcssApiKey )
       {
