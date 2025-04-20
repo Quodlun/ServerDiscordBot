@@ -28,7 +28,7 @@ export default
       const agent = new https.Agent
       (
         {
-          rejectUnauthorized: false, // 忽略 SSL 憑證驗證
+          rejectUnauthorized: false,
         }
       );
 
@@ -69,14 +69,6 @@ export default
         > Server Type: ${ respond.software }
         > Server Players: ${ respond.players.online }/${ respond.players.max }
       `
-    /*  `
-        
-        **Server Name**: ${ serverStatus.name }
-        **Status**: ${ serverStatus.status }
-        **Players**: ${ serverStatus.players.online }/${serverStatus.players.max}
-        **Uptime**: ${serverStatus.uptime}
-        `
-      `; */
 
       console.log ( statusMessage );
       await interaction.reply ( statusMessage );
