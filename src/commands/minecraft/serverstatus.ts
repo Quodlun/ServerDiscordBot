@@ -43,9 +43,27 @@ export default
       );
 
       const respond = response.data;
-      const statusMessage =
+      let serverStatus;
+
+      switch ( respond.status )
+      {
+        case 1:
+          serverStatus = "Online";
+          break;
+
+        case 2:
+          serverStatus = "Offline";
+          break;
+
+        default:
+          break;
+      }
+
+      const statusMessage = 
       `
-        **Server Type:** ${ respond.type }
+        > Server Name: ${ respond.name }
+        > Server Type: ${ respond.type }
+        > Server Status: ${ serverStatus }
       `
     /*  `
         
