@@ -27,6 +27,7 @@ const config =
   discordClientId: process.env.DISCORD_CLIENT_ID,
   discordGuildId: process.env.DISCORD_GUILD_ID,
   mcssApiKey: process.env.MCSS_API_KEY,
+  mcssServerId: process.env.MCSS_SERVER_ID,
 }
 
 export default config
