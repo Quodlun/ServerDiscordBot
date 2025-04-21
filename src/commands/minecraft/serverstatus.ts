@@ -1,10 +1,11 @@
 import { BotClient } from "@client";
 import { ChatInputCommandInteraction } from "discord.js";
-import { SlashCommandBuilder } from "@discordjs/builders";
+import { EmbedBuilder, SlashCommandBuilder } from "@discordjs/builders";
 import { config } from "@config";
 import { fetchIp } from "@data/fetchIp";
 import axios from "axios";
 import https from "https";
+import { channel } from "diagnostics_channel";
 
 export default
 {
@@ -26,17 +27,49 @@ export default
 
       let serverStatus = data.online ? "Online" : "Offline";
 
-      const statusMessage = 
-      `
-        > Server IP / Port: ${ data.ip }:${ data.port }
-        > Server Version: ${ data.version }
-        > Server Type: ${ data.software }
-        > Server Status: ${ serverStatus }
-        > Server Players: ${ data.players.online }/${ data.players.max }
-      `
+      const replyMessage = new EmbedBuilder()
+        .setColor ( 0x7777AA )
+        .setAuthor ( { name: "HARSH Server", iconURL: config.serverIcon } )
+        .setTitle ( "Server Status" )
+        .setThumbnail ( config.serverIcon )
+        .addFields
+        (
+          {
+            name: "Server IP / Port",                           
+            value: `${data.ip}:${data.port}`,
+            inline: true
+          },
 
-      console.log ( statusMessage );
-      await interaction.reply ( statusMessage );
+          {
+            name: "Server Version",
+            value: data.version,
+            inline: true
+          },
+
+          {
+            name: "Server Type",
+            value: data.software,
+            inline: true
+          },
+        )
+
+        .addFields
+        (
+          {
+            name: "Server Status",
+            value: serverStatus,
+            inline: true 
+          },
+
+          {
+            name: "Server Players",
+            value: `${data.players.online}/${data.players.max}`,
+            inline: true
+          }
+        )
+
+      console.log ( replyMessage );
+      await interaction.reply ({ embeds: [ replyMessage ] });
     }
     
     catch ( error )

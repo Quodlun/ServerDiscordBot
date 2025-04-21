@@ -28,6 +28,8 @@ const config =
   discordGuildId: process.env.DISCORD_GUILD_ID,
   mcssApiKey: process.env.MCSS_API_KEY,
   mcssServerId: process.env.MCSS_SERVER_ID,
+
+  serverIcon: "https://i.imgur.com/Ew7ugRv.png",
 }
 
 export default config
