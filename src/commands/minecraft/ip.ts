@@ -1,7 +1,7 @@
 import { BotClient } from "@client"
 import { ChatInputCommandInteraction } from "discord.js"
 import { SlashCommandBuilder } from "@discordjs/builders"
-import { fetchIp } from "@data/fetchIp";
+import { fetchIp } from "@data/fetchIp"
 
 export default
 {
