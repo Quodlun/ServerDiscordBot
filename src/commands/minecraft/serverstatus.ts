@@ -13,7 +13,7 @@ export default
     .setName ( "serverstatus" )
     .setDescription ( "Get the status of the Minecraft server." ),
 
-  async execute ( _client: BotClient, interaction: ChatInputCommandInteraction)
+  async execute ( _client: BotClient, interaction: ChatInputCommandInteraction )
   {
     console.log ( `[INFO] User: ${ interaction.user.tag } require fetching server status from MCSS API...` );
     try
@@ -36,7 +36,7 @@ export default
         (
           {
             name: "Server IP / Port",                           
-            value: `${data.ip}:${data.port}`,
+            value: `${ data.ip }:${ data.port }`,
             inline: true
           },
 
@@ -63,13 +63,13 @@ export default
 
           {
             name: "Server Players",
-            value: `${data.players.online}/${data.players.max}`,
+            value: `${ data.players.online }/${ data.players.max }`,
             inline: true
           }
         )
 
       console.log ( replyMessage );
-      await interaction.reply ({ embeds: [ replyMessage ] });
+      await interaction.reply ( { embeds: [ replyMessage ] } );
     }
     
     catch ( error )
