@@ -26,9 +26,10 @@ const config =
   discordToken: process.env.DISCORD_TOKEN,
   discordClientId: process.env.DISCORD_CLIENT_ID,
   discordGuildId: process.env.DISCORD_GUILD_ID,
+  discordOwnerId: process.env.DISCORD_OWNER_ID,
+
   mcssApiKey: process.env.MCSS_API_KEY,
   mcssServerId: process.env.MCSS_SERVER_ID,
-
   serverIcon: "https://i.imgur.com/Ew7ugRv.png",
 }
 
