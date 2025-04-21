@@ -1,7 +1,7 @@
 import { BotClient } from "@client"
 import { ChatInputCommandInteraction } from "discord.js"
 import { SlashCommandBuilder } from "@discordjs/builders"
-import { fetchIp } from "@data/fetchIp"; // 匯入 fetchIp 模組
+import { fetchIp } from "@data/fetchIp";
 
 export default
 {
@@ -16,7 +16,7 @@ export default
       console.log ( `[INFO] ${ interaction.user.tag } request fetching the ip.` );
     
       console.log ( "[INFO] Fetching external ip..." );
-      const ip = await fetchIp(); // 使用 fetchIp 函式
+      const ip = await fetchIp();
       
       console.log ( `[INFO] External ip fetched: ${ ip }` );
       await interaction.reply ( `Server IP: ${ ip }` );

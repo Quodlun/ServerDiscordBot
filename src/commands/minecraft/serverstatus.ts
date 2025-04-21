@@ -17,56 +17,22 @@ export default
     console.log ( `[INFO] User: ${ interaction.user.tag } require fetching server status from MCSS API...` );
     try
     {
-      const apiUrl = `https://api.mcsrvstat.us/3/192.168.31.23`;
+      let apiUrl = `https://api.mcsrvstat.us/3/${ await fetchIp () }`;
+      const response = await fetch ( apiUrl );
 
-      if ( !config.mcssApiKey )
-      {
-        throw new Error ( "API key is missing. Please set MCSS_API_KEY in your .env file." );
-      }
+      const data = await response.json ();
 
-      const agent = new https.Agent
-      (
-        {
-          rejectUnauthorized: false,
-        }
-      );
+      console.log ( data );
 
-      const response = await axios.get
-      ( apiUrl,
-        {
-          headers:
-          {
-            apiKey: `${ config.mcssApiKey }`,
-          },
-
-          httpsAgent: agent,
-        }
-      );
-
-      const respond = response.data;
-      let serverStatus;
-      
-      switch ( respond.online )
-      {
-        case true:
-          serverStatus = "Online";
-          break;
-
-        case false:
-          serverStatus = "Offline";
-          break;
-
-        default:
-          break;
-      };
+      let serverStatus = data.online ? "Online" : "Offline";
 
       const statusMessage = 
       `
-        > Server IP / Port: ${ respond.ip }:${ respond.port }
-        > Server Version: ${ respond.version }
+        > Server IP / Port: ${ data.ip }:${ data.port }
+        > Server Version: ${ data.version }
+        > Server Type: ${ data.software }
         > Server Status: ${ serverStatus }
-        > Server Type: ${ respond.software }
-        > Server Players: ${ respond.players.online }/${ respond.players.max }
+        > Server Players: ${ data.players.online }/${ data.players.max }
       `
 
       console.log ( statusMessage );
