@@ -86,27 +86,34 @@ async function controlServer ( action: number )
     const apiUrl = `https://${ await fetchIp () }:25560/api/v2/servers/${ config.mcssServerId }/execute/action`;
     console.log ( `[INFO] Sending request to ${ apiUrl }` );
 
-    const response = await axios.post(
+    const response = await axios.post  (
       apiUrl,
       {
         action: action, // 將操作動作作為請求的資料
       },
+
       {
-        headers: {
+        headers:
+        {
           apiKey: `${ config.mcssApiKey }`, // 正確地將 API 金鑰放入標頭
           'Content-Type': 'application/json',
         },
-        httpsAgent: new (require('https').Agent)({
-          rejectUnauthorized: false, // 忽略 SSL 憑證驗證錯誤
-        }),
+
+        httpsAgent: new ( require ( 'https' ).Agent )
+        (
+          {
+            rejectUnauthorized: false, // 忽略 SSL 憑證驗證錯誤
+          }
+        ),
       }
     );
 
     return `successfully doing server control action: "${ actionName }" `;
   }
+
   catch ( error: string | any )
   {
-    console.error( 'Failed to control, ', error );
+    console.error ( 'Failed to control, ', error );
     return `Failed to do the action. ${ error.response?.data?.message || error.message }`;
   }
 }
