@@ -4,6 +4,8 @@ import { fetchIp } from '@data/fetchIp';
 import axios from 'axios';
 import { ChatInputCommandInteraction, CommandInteraction, SlashCommandBuilder } from 'discord.js';
 
+var actionName: string;
+
 export default
 {
   data: new SlashCommandBuilder ()
@@ -40,19 +42,40 @@ export default
 
   async execute ( _client: BotClient, interaction: ChatInputCommandInteraction ) 
   {
-     if ( interaction.user.id !== config.discordOwnerId ) 
-     {
-        await interaction.reply ( "You got no permissions for this command." );
+    switch ( interaction.options.getString ( "action" ) )
+    {
+      case "1":
+        actionName = "Stop";
+        break;
 
-        return;
-     }
+      case "2":
+        actionName = "Start";
+        break;
 
-     else
-     {
-        console.log ( `[INFO] User: ${ interaction.user.tag } require control server from MCSS API...` );
-        const message = await  controlServer ( Number ( interaction.options.getString ( "action" ) ) )
-        await interaction.reply ( message )
-     }
+      case "3":
+        actionName =  "Kill";
+        break;
+
+      case "4":
+        actionName = "Restart";
+        break;
+    }
+
+    console.log ( `[INFO] User: ${ interaction.user.tag } require control server: ${ actionName }` );
+    
+    if ( interaction.user.id !== config.discordOwnerId ) 
+    {
+      await interaction.reply ( "You got no permissions for this command." );
+      console.warn ( `[WARN] User: ${ interaction.user.tag } tried to control server: ${ actionName }` );
+
+      return;
+    }
+
+    else
+    {
+      const message = await  controlServer ( Number ( interaction.options.getString ( "action" ) ) )
+      await interaction.reply ( message )
+    }
   } 
 }
 
@@ -79,11 +102,11 @@ async function controlServer ( action: number )
       }
     );
 
-    return `伺服器已成功執行操作`;
+    return `successfully doing server control action: "${ actionName }" `;
   }
   catch ( error: string | any )
   {
-    console.error( '伺服器控制失敗:', error );
-    return `伺服器操作失敗: ${ error.response?.data?.message || error.message }`;
+    console.error( 'Failed to control, ', error );
+    return `Failed to do the action. ${ error.response?.data?.message || error.message }`;
   }
 }
