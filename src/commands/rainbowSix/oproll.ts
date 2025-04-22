@@ -86,11 +86,37 @@ export default
         console.log ( `[INFO] User: "${ interaction.user.username }" rolling operator at side "${ interaction.options.getString ( "side" )?.toUpperCase () }"` );
         const operator = randomOperator ( interaction.options.getString ( "side" ) );
 
+        var opPicPath;
+
+        if ( operator === "Amaru")
+        {
+          const picRandom = Math.floor ( ( Math.random () * 10000 ) % 2 );
+          
+          switch ( picRandom )
+          {
+            case 0:
+              opPicPath = "src\\data\\opsImg\\atk\\amaru.avif";
+              break;
+
+            case 1:
+              opPicPath = "src\\data\\opsImg\\atk\\laiChingTe.png";
+              break;
+
+            default:
+              break;
+          }
+        }
+
+        else
+        {
+          opPicPath = `src\\data\\opsImg\\${ interaction.options.getString ( "side" ) }\\${ operator }.avif`
+        }
+
         const canvas = Canvas.createCanvas ( 300, 500 );
         const context = canvas.getContext('2d');
         const background = await Canvas.loadImage ( `src\\data\\opsImg\\background.png` );
         context.drawImage( background, 0, 0, canvas.width, canvas.height );
-        const opPic = await Canvas.loadImage ( `src\\data\\opsImg\\${ interaction.options.getString ( "side" ) }\\${ operator }.avif` );
+        const opPic = await Canvas.loadImage ( opPicPath );
         context.drawImage ( opPic, 0, 0, canvas.width, canvas.height );
         
         const attachment = new AttachmentBuilder(await canvas.encode('png'), { name: 'profile-image.png' });
