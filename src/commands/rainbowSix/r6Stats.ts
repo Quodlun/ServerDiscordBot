@@ -54,3 +54,17 @@ export default
     
   } 
 }
+
+async function getPlayerStats ( platform: "uplay" | "psn" | "xbl" | "steam" | "epic" | "amazon", name: string )
+{
+  const { 0: player } = await r6api.findByUsername(platform, username);
+  if (!player) return 'Player not found';
+
+  const { 0: stats } = await r6api.getStats(platform, player.id);
+  if (!stats) return 'Stats not found';
+  const {
+    pvp: { general }
+  } = stats;
+
+  return `${player.username} has played ${general.matches} matches.`;
+}
