@@ -1,8 +1,9 @@
 import { BotClient } from "@client"
-import { ChatInputCommandInteraction } from "discord.js"
+import { AttachmentBuilder, ChatInputCommandInteraction } from "discord.js"
 import { SlashCommandBuilder } from "@discordjs/builders"
 import { atk_ops, def_ops } from "@data/ops";
 import { player_id } from "@data/memberDiscordId";
+const Canvas = require('@napi-rs/canvas');
 
 
 
@@ -85,11 +86,22 @@ export default
         console.log ( `[INFO] User: "${ interaction.user.username }" rolling operator at side "${ interaction.options.getString ( "side" )?.toUpperCase () }"` );
         const operator = randomOperator ( interaction.options.getString ( "side" ) );
 
+        const canvas = Canvas.createCanvas ( 300, 500 );
+        const context = canvas.getContext('2d');
+        const background = await Canvas.loadImage ( `src\\data\\opsImg\\background.png` );
+        context.drawImage( background, 0, 0, canvas.width, canvas.height );
+        const opPic = await Canvas.loadImage ( `src\\data\\opsImg\\${ interaction.options.getString ( "side" ) }\\${ operator }.avif` );
+        context.drawImage ( opPic, 0, 0, canvas.width, canvas.height );
+        
+        const attachment = new AttachmentBuilder(await canvas.encode('png'), { name: 'profile-image.png' });
+
+
         await interaction.editReply
         (
           {
             content: `Operator rolling result: ${ operator }`,
-            files: [ `src\\data\\opsImg\\${ interaction.options.getString ( "side" ) }\\${ operator }.avif` ]
+            files: [ attachment ],
+            // files: [ `` ]
           }
         );
 
