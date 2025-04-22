@@ -1,31 +1,51 @@
-import { BotClient } from "@client"
-import { ChatInputCommandInteraction } from "discord.js"
-import { SlashCommandBuilder } from "@discordjs/builders"
-import { fetchIp } from "@data/fetchIp"
+import { BotClient } from '@client';
+import { ChatInputCommandInteraction, CommandInteraction, SlashCommandBuilder } from 'discord.js';
+const R6 = require('r6s-stats-api');
 
 export default
 {
   data: new SlashCommandBuilder ()
-    .setName ( 'ip' )
-    .setDescription ( 'Get the IP of the server.' ),
-    
-  async execute ( _client:BotClient, interaction:ChatInputCommandInteraction)
-  {
-    try 
-    {
-      console.log ( `[INFO] ${ interaction.user.tag } request fetching the ip.` );
-    
-      console.log ( "[INFO] Fetching external ip..." );
-      const ip = await fetchIp();
-      
-      console.log ( `[INFO] External ip fetched: ${ ip }` );
-      await interaction.reply ( `Server IP: ${ ip }` );
-    }
+    .setName ( "r6stats" )
+    .setDescription ( "Find player stats." )
 
-    catch ( error )
-    {
-      console.error ( "Error fetching external IP:", error );
-      await interaction.reply ( "Error fetching external IP." );
-    }
-  },
-};
+    .addStringOption
+    ( option => option
+      .setName ( "platform" )
+      .setDescription(  "Action to perform" )
+      .setRequired ( true )
+      .addChoices
+      (
+        {
+          name: "PC",
+          value: "pc"
+        },
+
+/*      {
+          name: "XBox",
+          value: "xbox"
+        },
+
+        {
+          name: "PlayStation",
+          value: "playstation"
+        },*/
+      )
+    )
+
+    .addStringOption
+    ( option => option
+      .setName ( "name" )
+      .setDescription(  "Play ID" )
+      .setRequired ( true )
+    ),
+
+  async execute ( _client: BotClient, interaction: ChatInputCommandInteraction ) 
+  {
+    let platform = interaction.options.getString ( "platform" );
+    let name = interaction.options.getString ( "name" );
+
+    let general = await R6.general(platform, name);
+    console.log('general', general);
+    await interaction.reply ( "Confirm" );
+  } 
+}
