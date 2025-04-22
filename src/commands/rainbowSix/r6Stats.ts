@@ -1,3 +1,5 @@
+// https://github.com/danielwerg/r6api.js
+
 import { BotClient } from '@client';
 import { ChatInputCommandInteraction, CommandInteraction, SlashCommandBuilder } from 'discord.js';
 const R6 = require('r6s-stats-api');
