@@ -5,7 +5,12 @@ import { ChatInputCommandInteraction, CommandInteraction, SlashCommandBuilder } 
 import config from '@config';
 import R6API from 'r6api.js'
 
-const r6api = new R6API ( { config.ubiEmail, config.ubiPassword } );
+const r6api = new R6API
+(
+  { email: config.ubiEmail,
+    password: config.ubiPassword
+  }
+);
 
 export default
 {
