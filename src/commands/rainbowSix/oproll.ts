@@ -101,7 +101,6 @@ export default
           {
             content: `Operator rolling result: ${ operator }`,
             files: [ attachment ],
-            // files: [ `` ]
           }
         );
 
