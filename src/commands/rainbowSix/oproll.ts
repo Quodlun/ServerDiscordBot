@@ -85,7 +85,14 @@ export default
         console.log ( `[INFO] User: "${ interaction.user.username }" rolling operator at side "${ interaction.options.getString ( "side" )?.toUpperCase () }"` );
         const operator = randomOperator ( interaction.options.getString ( "side" ) );
 
-        await interaction.editReply ( `Operator rolling result: ${ operator }` );
+        await interaction.editReply
+        (
+          {
+            content: `Operator rolling result: ${ operator }`,
+            files: [ `src\\data\\opsImg\\${ interaction.options.getString ( "side" ) }\\${ operator }.avif` ]
+          }
+        );
+
         console.log ( `[INFO] Roll result: ${ operator }` );
 
         break;
