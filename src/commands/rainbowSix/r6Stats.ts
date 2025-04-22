@@ -27,7 +27,7 @@ export default
       (
         {
           name: "PC",
-          value: "pc"
+          value: "uplay"
         },
 
 /*      {
