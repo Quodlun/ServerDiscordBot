@@ -27,5 +27,5 @@ export default
       console.error ( "Error fetching external IP:", error );
       await interaction.reply ( "Error fetching external IP." );
     }
-  },
+  }
 };

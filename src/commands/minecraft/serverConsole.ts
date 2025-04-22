@@ -9,6 +9,7 @@ export default
   data: new SlashCommandBuilder ()
     .setName ( "svrcnsl" )
     .setDescription ( "Server control" )
+    
     .addStringOption
     ( option => option
       .setName ( "command" )

@@ -11,6 +11,7 @@ export default
   data: new SlashCommandBuilder ()
     .setName ( "svrctrl" )
     .setDescription ( "Server console" )
+    
     .addStringOption
     ( option => option
       .setName ( "action" )
