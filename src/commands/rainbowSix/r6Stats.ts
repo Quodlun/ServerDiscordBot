@@ -1,7 +1,11 @@
-// https://github.com/danielwerg/r6api.js
+// API Docs: https://github.com/danielwerg/r6api.js
 
 import { BotClient } from '@client';
 import { ChatInputCommandInteraction, CommandInteraction, SlashCommandBuilder } from 'discord.js';
+import config from '@config';
+import R6API from 'r6api.js'
+
+const r6api = new R6API ( { config.ubiEmail, config.ubiPassword } );
 
 export default
 {
