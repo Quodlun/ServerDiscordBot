@@ -31,6 +31,9 @@ const config =
   mcssApiKey: process.env.MCSS_API_KEY,
   mcssServerId: process.env.MCSS_SERVER_ID,
   serverIcon: "https://i.imgur.com/Ew7ugRv.png",
+
+  opBackgroundPath: "src\\data\\opsImg\\background.png",
+  opNameplatePath: "src\\data\\opsImg\\nameplate.png",
 }
 
 export default config
