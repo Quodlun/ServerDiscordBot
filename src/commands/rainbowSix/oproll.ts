@@ -218,11 +218,9 @@ export default
           players.add ( randomPlayer () );
         }
 
-        // 將 players 和 operators 轉換為陣列
         const playerArray = Array.from(players);
         const operatorArray = Array.from(operators);
 
-        // 將玩家與幹員配對並格式化為字串
         const resultList = playerArray.map
         ( ( player, index ) =>
           {
@@ -231,7 +229,6 @@ export default
           }
         ).join( "\n" );
 
-        // 使用 interaction.reply 輸出結果
         await interaction.editReply(`Team operator rolling result:\n${resultList}`);
         console.log(`[INFO] Roll result:\n${resultList}`);
 
