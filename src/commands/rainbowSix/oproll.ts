@@ -36,7 +36,7 @@ function randomPlayer ()
 
 async function opImage ( opImgPath: string )
 {
-  const canvas = createCanvas ( 330, 540 );
+  const canvas = createCanvas ( 330, 130 );
   const opReturnImg = canvas.getContext ( '2d' );
 
   const background = await loadImage ( config.opBackgroundPath );
@@ -47,6 +47,11 @@ async function opImage ( opImgPath: string )
 
   const attachment = new AttachmentBuilder(await canvas.encode('png'), { name: 'profile-image.png' });
   return attachment;
+}
+
+async function nameplImg ( playerId: string )
+{
+
 }
 
 export default
@@ -142,6 +147,7 @@ export default
           {
             content: `Operator rolling result: ${ operator }`,
             files: [ await opImage ( opPicPath ) ],
+            files: [ await nameplImg () ],
           }
         );
 
