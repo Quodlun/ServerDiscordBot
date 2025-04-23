@@ -110,10 +110,12 @@ export default
           opPicPath = `src\\data\\opsImg\\${ interaction.options.getString ( "side" ) }\\${ operator }.avif`
         }
 
-        const canvas = createCanvas ( 332, 540 );
+        const canvas = createCanvas ( 330, 670 );
         const context = canvas.getContext('2d');
         const background = await loadImage ( `src\\data\\opsImg\\background.png` );
-        context.drawImage( background, 0, 0, canvas.width, canvas.height );
+        const nameplate = await loadImage ( `src\\data\\opsImg\\nameplate.png` );
+        context.drawImage( background, 0, 0, background.width, background.height );
+        context.drawImage( nameplate, 0, 540, nameplate.width, nameplate.height );
         
         if ( !opPicPath )
         {
@@ -121,7 +123,7 @@ export default
         }
 
         const opPic = await loadImage(opPicPath);
-        context.drawImage ( opPic, 0, 0, canvas.width, canvas.height );
+        context.drawImage ( opPic, 0, 0, background.width, background.height );
         
         const attachment = new AttachmentBuilder(await canvas.encode('png'), { name: 'profile-image.png' });
 
