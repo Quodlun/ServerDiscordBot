@@ -36,26 +36,31 @@ function randomPlayer ()
 
 async function opImage ( opImgPath: string )
 {
-  const canvas = createCanvas ( 330, 130 );
-  const opReturnImg = canvas.getContext ( '2d' );
+  const canvas = createCanvas ( 330, 540 );
+  const returnImg = canvas.getContext ( '2d' );
 
-  const background = await loadImage ( config.opNameplatePath );
-  opReturnImg.drawImage( background, 0, 0, canvas.width, canvas.height );
+  const background = await loadImage ( config.opBackgroundPath );
+  returnImg.drawImage( background, 0, 0, canvas.width, canvas.height );
 
   const opImg = await loadImage ( opImgPath );
-  opReturnImg.drawImage ( opImg, 0, 0, canvas.width, canvas.height );
+  returnImg.drawImage ( opImg, 0, 0, canvas.width, canvas.height );
 
   const attachment = new AttachmentBuilder(await canvas.encode('png'), { name: 'profile-image.png' });
   return attachment;
 }
 
-async function nameplImg ( playerId: string )
+async function nameplImg ()
 {
   const canvas = createCanvas ( 330, 130 );
-  const opReturnImg = canvas.getContext ( '2d' );
+  const returnImg = canvas.getContext ( '2d' );
 
   const nameplBackground = await loadImage ( config.opNameplatePath );
-  opReturnImg.drawImage( nameplBackground, 0, 0, canvas.width, canvas.height );
+  returnImg.drawImage( nameplBackground, 0, 0, canvas.width, canvas.height );
+
+  console.log(GlobalFonts.families);
+  returnImg.font = "30px ScoutCond";
+  returnImg.fillStyle = "#FFFFFF";
+  returnImg.fillText ( "Shane_JPK", 23, 56 );
 
   const attachment = new AttachmentBuilder(await canvas.encode('png'), { name: 'profile-image.png' });
   return attachment;
@@ -139,21 +144,11 @@ export default
           opPicPath = `src\\data\\opsImg\\${ interaction.options.getString ( "side" ) }\\${ operator }.avif`
         }
         
-        /*
-        const nameplate = await loadImage ( `src\\data\\opsImg\\nameplate.png` );
-        context.drawImage( nameplate, 0, 540, nameplate.width, nameplate.height );
-
-        console.log(GlobalFonts.families);
-        context.font = "30px ScoutCond";
-        context.fillStyle = "#FFFFFF";
-        context.fillText ( "Shane_JPK", 23, 596 );
-        */
-        
         await interaction.editReply
         (
           {
             content: `Operator rolling result: ${ operator }`,
-            files: [ await opImage ( opPicPath ) ],
+            files: [ await nameplImg () ],
           }
         );
 
