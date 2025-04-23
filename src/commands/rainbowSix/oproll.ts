@@ -58,7 +58,6 @@ async function nameplImage ( playerId: string )
   const nameplBackground = await loadImage ( config.opNameplatePath );
   returnImg.drawImage( nameplBackground, 0, 0, canvas.width, canvas.height );
 
-  console.log(GlobalFonts.families);
   returnImg.font = "30px ScoutCond";
   returnImg.fillStyle = "#FFFFFF";
   returnImg.fillText ( playerId, 23, 76 );
