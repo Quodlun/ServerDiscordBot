@@ -6,6 +6,8 @@ import { player_id } from "@data/memberDiscordId"
 import { createCanvas, GlobalFonts, loadImage } from "@napi-rs/canvas"
 import config from "@config"
 
+var opPicPath: string = "";
+
 function randomOperator ( side: any )
 {
   var random_num;
@@ -45,11 +47,10 @@ async function opImage ( opImgPath: string )
   const opImg = await loadImage ( opImgPath );
   returnImg.drawImage ( opImg, 0, 0, canvas.width, canvas.height );
 
-  const attachment = new AttachmentBuilder(await canvas.encode('png'), { name: 'profile-image.png' });
-  return attachment;
+  return canvas.encode('png');
 }
 
-async function nameplImg ()
+async function nameplImage ()
 {
   const canvas = createCanvas ( 330, 130 );
   const returnImg = canvas.getContext ( '2d' );
@@ -61,6 +62,22 @@ async function nameplImg ()
   returnImg.font = "30px ScoutCond";
   returnImg.fillStyle = "#FFFFFF";
   returnImg.fillText ( "Shane_JPK", 23, 56 );
+
+  return canvas.encode('png');
+}
+
+async function finalImg ()
+{
+  const canvas = createCanvas ( 330, 670 );
+  const returnImg = canvas.getContext ( '2d' );
+
+  const opImgBuffer = await opImage ( opPicPath );
+  const opImgOutput = await loadImage ( opImgBuffer );
+  const nameplBuffer = await nameplImage();
+  const nameplImgOutput = await loadImage(nameplBuffer);
+
+  returnImg.drawImage ( opImgOutput, 0, 0, opImgOutput.width, opImgOutput.height );
+  returnImg.drawImage ( nameplImgOutput, 0, 540, nameplImgOutput.width, nameplImgOutput.height );
 
   const attachment = new AttachmentBuilder(await canvas.encode('png'), { name: 'profile-image.png' });
   return attachment;
@@ -118,8 +135,6 @@ export default
         console.log ( `[INFO] User: "${ interaction.user.username }" rolling operator at side "${ interaction.options.getString ( "side" )?.toUpperCase () }"` );
         const operator = randomOperator ( interaction.options.getString ( "side" ) );
 
-        var opPicPath: string = "";
-
         if ( operator === "Amaru")
         {
           const amaruPicRandom = Math.floor ( ( Math.random () * 10000 ) % 2 );
@@ -148,7 +163,7 @@ export default
         (
           {
             content: `Operator rolling result: ${ operator }`,
-            files: [ await nameplImg () ],
+            files: [ await finalImg () ],
           }
         );
 
