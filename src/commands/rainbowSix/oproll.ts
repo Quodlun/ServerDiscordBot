@@ -17,12 +17,10 @@ function randomOperator ( side: any )
     case "atk":
       random_num = Math.floor ( ( Math.random () * 10000 ) % atk_ops.length);
       return atk_ops [ random_num ];
-      break;
 
     case "def":
-      random_num = Math.floor((Math.random() * 10000) % def_ops.length);
+      random_num = Math.floor ( ( Math.random () * 10000 ) % def_ops.length );
       return def_ops [ random_num ];
-      break;
 
     default:
       break;
