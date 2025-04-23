@@ -13,7 +13,7 @@ function randomOperator ( side: any )
   {
     case "atk":
       random_num = Math.floor ( ( Math.random () * 10000 ) % atk_ops.length);
-      return atk_ops [ random_num ];
+      return "Jackal" //atk_ops [ random_num ];
       break;
 
     case "def":
@@ -110,7 +110,7 @@ export default
           opPicPath = `src\\data\\opsImg\\${ interaction.options.getString ( "side" ) }\\${ operator }.avif`
         }
 
-        const canvas = createCanvas ( 300, 500 );
+        const canvas = createCanvas ( 332, 540 );
         const context = canvas.getContext('2d');
         const background = await loadImage ( `src\\data\\opsImg\\background.png` );
         context.drawImage( background, 0, 0, canvas.width, canvas.height );
