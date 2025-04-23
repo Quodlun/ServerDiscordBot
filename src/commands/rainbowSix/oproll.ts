@@ -3,7 +3,12 @@ import { AttachmentBuilder, ChatInputCommandInteraction } from "discord.js"
 import { SlashCommandBuilder } from "@discordjs/builders"
 import { atk_ops, def_ops } from "@data/ops"
 import { player_id } from "@data/memberDiscordId"
-import { createCanvas, loadImage } from "@napi-rs/canvas"
+import { createCanvas, GlobalFonts, loadImage } from "@napi-rs/canvas"
+import config from "@config"
+import interactionCreate from "@events/interactionCreate"
+
+var opPicPath: string = "";
+var playerId: string = "";
 
 function randomOperator ( side: any )
 {
@@ -14,12 +19,10 @@ function randomOperator ( side: any )
     case "atk":
       random_num = Math.floor ( ( Math.random () * 10000 ) % atk_ops.length);
       return atk_ops [ random_num ];
-      break;
 
     case "def":
-      random_num = Math.floor((Math.random() * 10000) % def_ops.length);
+      random_num = Math.floor ( ( Math.random () * 10000 ) % def_ops.length );
       return def_ops [ random_num ];
-      break;
 
     default:
       break;
@@ -31,6 +34,53 @@ function randomPlayer ()
   var random_num;
   random_num = Math.floor ( ( Math.random () * 10000 ) % player_id.length);
   return player_id [ random_num ];
+}
+
+async function opImage ( opImgPath: string )
+{
+  const canvas = createCanvas ( 330, 540 );
+  const returnImg = canvas.getContext ( '2d' );
+
+  const background = await loadImage ( config.opBackgroundPath );
+  returnImg.drawImage( background, 0, 0, canvas.width, canvas.height );
+
+  const opImg = await loadImage ( opImgPath );
+  returnImg.drawImage ( opImg, 0, 0, canvas.width, canvas.height );
+
+  return canvas.encode('png');
+}
+
+async function nameplImage ( playerId: string )
+{
+  const canvas = createCanvas ( 330, 130 );
+  const returnImg = canvas.getContext ( '2d' );
+
+  const nameplBackground = await loadImage ( config.opNameplatePath );
+  returnImg.drawImage( nameplBackground, 0, 0, canvas.width, canvas.height );
+
+  console.log(GlobalFonts.families);
+  returnImg.font = "30px ScoutCond";
+  returnImg.fillStyle = "#FFFFFF";
+  returnImg.fillText ( playerId, 23, 76 );
+
+  return canvas.encode('png');
+}
+
+async function finalImg ()
+{
+  const canvas = createCanvas ( 330, 670 );
+  const returnImg = canvas.getContext ( '2d' );
+
+  const opImgBuffer = await opImage ( opPicPath );
+  const opImgOutput = await loadImage ( opImgBuffer );
+  const nameplBuffer = await nameplImage ( playerId );
+  const nameplImgOutput = await loadImage(nameplBuffer);
+
+  returnImg.drawImage ( opImgOutput, 0, 0, opImgOutput.width, opImgOutput.height );
+  returnImg.drawImage ( nameplImgOutput, 0, 540, nameplImgOutput.width, nameplImgOutput.height );
+
+  const attachment = new AttachmentBuilder(await canvas.encode('png'), { name: 'profile-image.png' });
+  return attachment;
 }
 
 export default
@@ -61,6 +111,7 @@ export default
     ( Option => Option.setName ( "side" )
       .setDescription ( "Select which side to roll." )
       .setRequired ( true )
+
       .addChoices
       (
         {
@@ -84,13 +135,11 @@ export default
         console.log ( `[INFO] User: "${ interaction.user.username }" rolling operator at side "${ interaction.options.getString ( "side" )?.toUpperCase () }"` );
         const operator = randomOperator ( interaction.options.getString ( "side" ) );
 
-        var opPicPath;
-
         if ( operator === "Amaru")
         {
-          const picRandom = Math.floor ( ( Math.random () * 10000 ) % 2 );
+          const amaruPicRandom = Math.floor ( ( Math.random () * 10000 ) % 2 );
           
-          switch ( picRandom )
+          switch ( amaruPicRandom )
           {
             case 0:
               opPicPath = "src\\data\\opsImg\\atk\\amaru.avif";
@@ -109,28 +158,43 @@ export default
         {
           opPicPath = `src\\data\\opsImg\\${ interaction.options.getString ( "side" ) }\\${ operator }.avif`
         }
-
-        const canvas = createCanvas ( 300, 500 );
-        const context = canvas.getContext('2d');
-        const background = await loadImage ( `src\\data\\opsImg\\background.png` );
-        context.drawImage( background, 0, 0, canvas.width, canvas.height );
-        
-        if ( !opPicPath )
+  
+        switch ( interaction.user.id )
         {
-          throw new Error ( "Operator picture path is undefined." );
-        }
+          case "766278007169351721":
+            playerId = "Saiki.HARSH";
+            break;
 
-        const opPic = await loadImage(opPicPath);
-        context.drawImage ( opPic, 0, 0, canvas.width, canvas.height );
+          case "851325296749707325":
+            playerId = "Hsure.HARSH";
+            break;
+
+            case "857821833760079923":
+            playerId = "Checkmate.HARSH";
+            break;
+
+          case "869873944356876299":
+            playerId = "fAiLEX.HARSH";
+            break;
+          
+            case "842536747082317885":
+              playerId = "BK.HARSH";
+              break;
         
-        const attachment = new AttachmentBuilder(await canvas.encode('png'), { name: 'profile-image.png' });
+            case "956936107923243138":
+              playerId = "Oh0wardO.HARSH";
+              break;
 
-
+          default:
+            playerId = "Unknown";
+            break;
+        }
+        
         await interaction.editReply
         (
           {
             content: `Operator rolling result: ${ operator }`,
-            files: [ attachment ],
+            files: [ await finalImg () ],
           }
         );
 
