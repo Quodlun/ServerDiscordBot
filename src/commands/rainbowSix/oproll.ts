@@ -39,8 +39,8 @@ async function opImage ( opImgPath: string )
   const canvas = createCanvas ( 330, 130 );
   const opReturnImg = canvas.getContext ( '2d' );
 
-  const nameplBackground = await loadImage ( config.opNameplatePath );
-  opReturnImg.drawImage( nameplBackground, 0, 0, canvas.width, canvas.height );
+  const background = await loadImage ( config.opNameplatePath );
+  opReturnImg.drawImage( background, 0, 0, canvas.width, canvas.height );
 
   const opImg = await loadImage ( opImgPath );
   opReturnImg.drawImage ( opImg, 0, 0, canvas.width, canvas.height );
@@ -51,7 +51,14 @@ async function opImage ( opImgPath: string )
 
 async function nameplImg ( playerId: string )
 {
+  const canvas = createCanvas ( 330, 130 );
+  const opReturnImg = canvas.getContext ( '2d' );
 
+  const nameplBackground = await loadImage ( config.opNameplatePath );
+  opReturnImg.drawImage( nameplBackground, 0, 0, canvas.width, canvas.height );
+
+  const attachment = new AttachmentBuilder(await canvas.encode('png'), { name: 'profile-image.png' });
+  return attachment;
 }
 
 export default
@@ -147,7 +154,6 @@ export default
           {
             content: `Operator rolling result: ${ operator }`,
             files: [ await opImage ( opPicPath ) ],
-            files: [ await nameplImg () ],
           }
         );
 
