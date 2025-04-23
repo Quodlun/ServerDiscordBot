@@ -39,8 +39,8 @@ async function opImage ( opImgPath: string )
   const canvas = createCanvas ( 330, 130 );
   const opReturnImg = canvas.getContext ( '2d' );
 
-  const background = await loadImage ( config.opBackgroundPath );
-  opReturnImg.drawImage( background, 0, 0, canvas.width, canvas.height );
+  const nameplBackground = await loadImage ( config.opNameplatePath );
+  opReturnImg.drawImage( nameplBackground, 0, 0, canvas.width, canvas.height );
 
   const opImg = await loadImage ( opImgPath );
   opReturnImg.drawImage ( opImg, 0, 0, canvas.width, canvas.height );
