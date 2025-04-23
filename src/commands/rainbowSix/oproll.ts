@@ -59,7 +59,7 @@ async function nameplImage ()
   console.log(GlobalFonts.families);
   returnImg.font = "30px ScoutCond";
   returnImg.fillStyle = "#FFFFFF";
-  returnImg.fillText ( "Shane_JPK", 23, 56 );
+  returnImg.fillText ( "Shane_JPK", 23, 76 );
 
   return canvas.encode('png');
 }
