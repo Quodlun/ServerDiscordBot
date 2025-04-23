@@ -1,11 +1,9 @@
 import { BotClient } from "@client"
 import { AttachmentBuilder, ChatInputCommandInteraction } from "discord.js"
 import { SlashCommandBuilder } from "@discordjs/builders"
-import { atk_ops, def_ops } from "@data/ops";
-import { player_id } from "@data/memberDiscordId";
-const Canvas = require('@napi-rs/canvas');
-
-
+import { atk_ops, def_ops } from "@data/ops"
+import { player_id } from "@data/memberDiscordId"
+import { createCanvas, loadImage } from "@napi-rs/canvas"
 
 function randomOperator ( side: any )
 {
@@ -112,11 +110,17 @@ export default
           opPicPath = `src\\data\\opsImg\\${ interaction.options.getString ( "side" ) }\\${ operator }.avif`
         }
 
-        const canvas = Canvas.createCanvas ( 300, 500 );
+        const canvas = createCanvas ( 300, 500 );
         const context = canvas.getContext('2d');
-        const background = await Canvas.loadImage ( `src\\data\\opsImg\\background.png` );
+        const background = await loadImage ( `src\\data\\opsImg\\background.png` );
         context.drawImage( background, 0, 0, canvas.width, canvas.height );
-        const opPic = await Canvas.loadImage ( opPicPath );
+        
+        if ( !opPicPath )
+        {
+          throw new Error ( "Operator picture path is undefined." );
+        }
+
+        const opPic = await loadImage(opPicPath);
         context.drawImage ( opPic, 0, 0, canvas.width, canvas.height );
         
         const attachment = new AttachmentBuilder(await canvas.encode('png'), { name: 'profile-image.png' });
