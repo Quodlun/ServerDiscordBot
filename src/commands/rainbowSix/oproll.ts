@@ -5,8 +5,10 @@ import { atk_ops, def_ops } from "@data/ops"
 import { player_id } from "@data/memberDiscordId"
 import { createCanvas, GlobalFonts, loadImage } from "@napi-rs/canvas"
 import config from "@config"
+import interactionCreate from "@events/interactionCreate"
 
 var opPicPath: string = "";
+var playerId: string = "";
 
 function randomOperator ( side: any )
 {
@@ -48,7 +50,7 @@ async function opImage ( opImgPath: string )
   return canvas.encode('png');
 }
 
-async function nameplImage ()
+async function nameplImage ( playerId: string )
 {
   const canvas = createCanvas ( 330, 130 );
   const returnImg = canvas.getContext ( '2d' );
@@ -59,7 +61,7 @@ async function nameplImage ()
   console.log(GlobalFonts.families);
   returnImg.font = "30px ScoutCond";
   returnImg.fillStyle = "#FFFFFF";
-  returnImg.fillText ( "Shane_JPK", 23, 76 );
+  returnImg.fillText ( playerId, 23, 76 );
 
   return canvas.encode('png');
 }
@@ -71,7 +73,7 @@ async function finalImg ()
 
   const opImgBuffer = await opImage ( opPicPath );
   const opImgOutput = await loadImage ( opImgBuffer );
-  const nameplBuffer = await nameplImage();
+  const nameplBuffer = await nameplImage ( playerId );
   const nameplImgOutput = await loadImage(nameplBuffer);
 
   returnImg.drawImage ( opImgOutput, 0, 0, opImgOutput.width, opImgOutput.height );
@@ -155,6 +157,37 @@ export default
         else
         {
           opPicPath = `src\\data\\opsImg\\${ interaction.options.getString ( "side" ) }\\${ operator }.avif`
+        }
+  
+        switch ( interaction.user.id )
+        {
+          case "766278007169351721":
+            playerId = "Saiki.HARSH";
+            break;
+
+          case "851325296749707325":
+            playerId = "Hsure.HARSH";
+            break;
+
+            case "857821833760079923":
+            playerId = "Checkmate.HARSH";
+            break;
+
+          case "869873944356876299":
+            playerId = "fAiLEX.HARSH";
+            break;
+          
+            case "842536747082317885":
+              playerId = "BK.HARSH";
+              break;
+        
+            case "956936107923243138":
+              playerId = "Oh0wardO.HARSH";
+              break;
+
+          default:
+            playerId = "Unknown";
+            break;
         }
         
         await interaction.editReply
