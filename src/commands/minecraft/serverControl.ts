@@ -4,7 +4,7 @@ import { fetchIp } from '@data/fetchIp';
 import axios from 'axios';
 import { ChatInputCommandInteraction, CommandInteraction, SlashCommandBuilder } from 'discord.js';
 
-var actionName: string;
+let actionName: string;
 
 export default
 {

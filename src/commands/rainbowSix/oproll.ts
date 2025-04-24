@@ -6,80 +6,8 @@ import { player_id } from "@data/memberDiscordId"
 import { createCanvas, loadImage } from "@napi-rs/canvas"
 import config from "@config"
 
-var opPicPath: string = "";
-var playerId: string = "";
-
-function randomOperator ( side: any )
-{
-  var random_num;
-
-  switch ( side )
-  {
-    case "atk":
-      random_num = Math.floor ( ( Math.random () * 10000 ) % atk_ops.length);
-      return atk_ops [ random_num ];
-
-    case "def":
-      random_num = Math.floor ( ( Math.random () * 10000 ) % def_ops.length );
-      return def_ops [ random_num ];
-
-    default:
-      break;
-  }
-}
-
-function randomPlayer ()
-{
-  var random_num;
-  random_num = Math.floor ( ( Math.random () * 10000 ) % player_id.length);
-  return player_id [ random_num ];
-}
-
-async function opImage ( opImgPath: string )
-{
-  const canvas = createCanvas ( 356, 578 );
-  const returnImg = canvas.getContext ( '2d' );
-
-  const background = await loadImage ( config.opBackgroundPath );
-  returnImg.drawImage( background, 0, 0, canvas.width, canvas.height );
-
-  const opImg = await loadImage ( opImgPath );
-  returnImg.drawImage ( opImg, 0, 0, canvas.width, canvas.height );
-
-  return canvas.encode('png');
-}
-
-async function nameplImage ( playerId: string )
-{
-  const canvas = createCanvas ( 356, 142 );
-  const returnImg = canvas.getContext ( '2d' );
-
-  const nameplBackground = await loadImage ( config.opNameplatePath );
-  returnImg.drawImage( nameplBackground, 0, 0, canvas.width, canvas.height );
-
-  returnImg.font = "28px ScoutCond";
-  returnImg.fillStyle = "#FFFFFF";
-  returnImg.fillText ( playerId, 23, 84 );
-
-  return canvas.encode ( 'png' );
-}
-
-async function finalImg ()
-{
-  const canvas = createCanvas ( 356, 720 );
-  const returnImg = canvas.getContext ( '2d' );
-
-  const opImgBuffer = await opImage ( opPicPath );
-  const opImgOutput = await loadImage ( opImgBuffer );
-  const nameplBuffer = await nameplImage ( playerId );
-  const nameplImgOutput = await loadImage(nameplBuffer);
-
-  returnImg.drawImage ( opImgOutput, 0, 0, opImgOutput.width, opImgOutput.height );
-  returnImg.drawImage ( nameplImgOutput, 0, 578, nameplImgOutput.width, nameplImgOutput.height );
-
-  const attachment = new AttachmentBuilder(await canvas.encode('png'), { name: 'profile-image.png' });
-  return attachment;
-}
+let opImgPath: string = "";
+let playerId: string = "";
 
 export default
 {
@@ -140,11 +68,11 @@ export default
           switch ( amaruPicRandom )
           {
             case 0:
-              opPicPath = "src\\data\\opsImg\\atk\\amaru.avif";
+              opImgPath = "res/opsImg/atk/amaru.avif";
               break;
 
             case 1:
-              opPicPath = "src\\data\\opsImg\\atk\\laiChingTe.png";
+              opImgPath = "res/opsImg/atk/laiChingTe.png";
               break;
 
             default:
@@ -154,7 +82,7 @@ export default
 
         else
         {
-          opPicPath = `src\\data\\opsImg\\${ interaction.options.getString ( "side" ) }\\${ operator }.avif`
+          opImgPath = `res/opsImg/${ interaction.options.getString ( "side" ) }/${ operator }.avif`
         }
   
         switch ( interaction.user.id )
@@ -192,7 +120,7 @@ export default
         (
           {
             content: `Operator rolling result: ${ operator }`,
-            files: [ await finalImg () ],
+            files: [ await generateOperatorCard () ],
           }
         );
 
@@ -237,10 +165,58 @@ export default
         break;
 
       default:
-        await interaction.reply("Invalid mode selected.");
+        await interaction.reply ("Invalid mode selected.");
         console.error("[ERROR] Invalid mode provided.");
 
         break;
     }
   }
 };
+
+function randomOperator ( side: any )
+{
+  let random_num;
+
+  switch ( side )
+  {
+    case "atk":
+      random_num = Math.floor ( ( Math.random () * 10000 ) % atk_ops.length);
+      return atk_ops [ random_num ];
+
+    case "def":
+      random_num = Math.floor ( ( Math.random () * 10000 ) % def_ops.length );
+      return def_ops [ random_num ];
+
+    default:
+      break;
+  }
+}
+
+function randomPlayer ()
+{
+  let random_num;
+  random_num = Math.floor ( ( Math.random () * 10000 ) % player_id.length);
+  return player_id [ random_num ];
+}
+
+async function generateOperatorCard ()
+{
+  const canvas = createCanvas(356, 720);
+  const context = canvas.getContext('2d');
+
+  const opBackground = await loadImage(config.opBackgroundPath);
+  context.drawImage(opBackground, 0, 0, 356, 578);
+
+  const opImg = await loadImage(opImgPath);
+  context.drawImage(opImg, 0, 0, 356, 578);
+
+  const nameplBackground = await loadImage(config.opNameplPath);
+  context.drawImage(nameplBackground, 0, 578, 356, 142);
+
+  context.font = "28px ScoutCond";
+  context.fillStyle = "#FFFFFF";
+  context.fillText(playerId, 23, 662);
+
+  const attachment = new AttachmentBuilder(await canvas.encode('png'), { name: 'operator-card.png' });
+  return attachment;
+}
