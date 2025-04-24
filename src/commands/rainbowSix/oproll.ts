@@ -3,9 +3,8 @@ import { AttachmentBuilder, ChatInputCommandInteraction } from "discord.js"
 import { SlashCommandBuilder } from "@discordjs/builders"
 import { atk_ops, def_ops } from "@data/ops"
 import { player_id } from "@data/memberDiscordId"
-import { createCanvas, GlobalFonts, loadImage } from "@napi-rs/canvas"
+import { createCanvas, loadImage } from "@napi-rs/canvas"
 import config from "@config"
-import interactionCreate from "@events/interactionCreate"
 
 var opPicPath: string = "";
 var playerId: string = "";
@@ -38,7 +37,7 @@ function randomPlayer ()
 
 async function opImage ( opImgPath: string )
 {
-  const canvas = createCanvas ( 330, 540 );
+  const canvas = createCanvas ( 356, 578 );
   const returnImg = canvas.getContext ( '2d' );
 
   const background = await loadImage ( config.opBackgroundPath );
@@ -52,22 +51,22 @@ async function opImage ( opImgPath: string )
 
 async function nameplImage ( playerId: string )
 {
-  const canvas = createCanvas ( 330, 130 );
+  const canvas = createCanvas ( 356, 142 );
   const returnImg = canvas.getContext ( '2d' );
 
   const nameplBackground = await loadImage ( config.opNameplatePath );
   returnImg.drawImage( nameplBackground, 0, 0, canvas.width, canvas.height );
 
-  returnImg.font = "30px ScoutCond";
+  returnImg.font = "28px ScoutCond";
   returnImg.fillStyle = "#FFFFFF";
-  returnImg.fillText ( playerId, 23, 76 );
+  returnImg.fillText ( playerId, 23, 84 );
 
-  return canvas.encode('png');
+  return canvas.encode ( 'png' );
 }
 
 async function finalImg ()
 {
-  const canvas = createCanvas ( 330, 670 );
+  const canvas = createCanvas ( 356, 720 );
   const returnImg = canvas.getContext ( '2d' );
 
   const opImgBuffer = await opImage ( opPicPath );
@@ -76,7 +75,7 @@ async function finalImg ()
   const nameplImgOutput = await loadImage(nameplBuffer);
 
   returnImg.drawImage ( opImgOutput, 0, 0, opImgOutput.width, opImgOutput.height );
-  returnImg.drawImage ( nameplImgOutput, 0, 540, nameplImgOutput.width, nameplImgOutput.height );
+  returnImg.drawImage ( nameplImgOutput, 0, 578, nameplImgOutput.width, nameplImgOutput.height );
 
   const attachment = new AttachmentBuilder(await canvas.encode('png'), { name: 'profile-image.png' });
   return attachment;
