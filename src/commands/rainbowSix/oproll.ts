@@ -3,9 +3,8 @@ import { AttachmentBuilder, ChatInputCommandInteraction } from "discord.js"
 import { SlashCommandBuilder } from "@discordjs/builders"
 import { atk_ops, def_ops } from "@data/ops"
 import { player_id } from "@data/memberDiscordId"
-import { createCanvas, GlobalFonts, loadImage } from "@napi-rs/canvas"
+import { createCanvas, loadImage } from "@napi-rs/canvas"
 import config from "@config"
-import interactionCreate from "@events/interactionCreate"
 
 var opPicPath: string = "";
 var playerId: string = "";
@@ -58,7 +57,6 @@ async function nameplImage ( playerId: string )
   const nameplBackground = await loadImage ( config.opNameplatePath );
   returnImg.drawImage( nameplBackground, 0, 0, canvas.width, canvas.height );
 
-  console.log(GlobalFonts.families);
   returnImg.font = "28px ScoutCond";
   returnImg.fillStyle = "#FFFFFF";
   returnImg.fillText ( playerId, 23, 84 );
