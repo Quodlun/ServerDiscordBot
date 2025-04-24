@@ -59,11 +59,11 @@ async function nameplImage ( playerId: string )
   returnImg.drawImage( nameplBackground, 0, 0, canvas.width, canvas.height );
 
   console.log(GlobalFonts.families);
-  returnImg.font = "30px ScoutCond";
+  returnImg.font = "28px ScoutCond";
   returnImg.fillStyle = "#FFFFFF";
-  returnImg.fillText ( playerId, 23, 76 );
+  returnImg.fillText ( playerId, 23, 84 );
 
-  return canvas.encode('png');
+  return canvas.encode ( 'png' );
 }
 
 async function finalImg ()
