@@ -9,6 +9,15 @@ import config from "@config"
 let opImgPath: string = "";
 let playerId: string = "";
 
+const playerIdMap: Record<string, string> = {
+  "766278007169351721": "Saiki.HARSH",
+  "851325296749707325": "Hsure.HARSH",
+  "857821833760079923": "Checkmate.HARSH",
+  "869873944356876299": "fAiLEX.HARSH",
+  "842536747082317885": "BK.HARSH",
+  "956936107923243138": "Oh0wardO.HARSH",
+};
+
 export default
 {
   data: new SlashCommandBuilder ()
@@ -52,144 +61,82 @@ export default
       )
     ),
 
-  async execute( _client: BotClient, interaction: ChatInputCommandInteraction ) 
-  {
-    switch ( interaction.options.getString ( "mode" ) )
-    {
+  async execute(_client: BotClient, interaction: ChatInputCommandInteraction) {
+    const mode = interaction.options.getString("mode");
+    const side = interaction.options.getString("side")?.toLowerCase();
+
+    switch (mode) {
       case "solo":
-        await interaction.reply ( `Rolling operator at ${ interaction.options.getString ( "side" )?.toUpperCase () }` );
-        console.log ( `[INFO] User: "${ interaction.user.username }" rolling operator at side "${ interaction.options.getString ( "side" )?.toUpperCase () }"` );
-        const operator = randomOperator ( interaction.options.getString ( "side" ) );
+        await interaction.reply(`Rolling operator at ${side?.toUpperCase()}`);
+        console.log(`[INFO] User: "${interaction.user.username}" rolling operator at side "${side?.toUpperCase()}"`);
+        const operator = randomOperator(side);
 
-        if ( operator === "Amaru")
-        {
-          const amaruPicRandom = Math.floor ( ( Math.random () * 10000 ) % 2 );
-          
-          switch ( amaruPicRandom )
-          {
-            case 0:
-              opImgPath = "res/opsImg/atk/amaru.avif";
-              break;
+        opImgPath = operator === "Amaru"
+          ? Math.random() < 0.5
+            ? "res/opsImg/atk/amaru.avif"
+            : "res/opsImg/atk/laiChingTe.png"
+          : `res/opsImg/${side}/${operator}.avif`;
 
-            case 1:
-              opImgPath = "res/opsImg/atk/laiChingTe.png";
-              break;
+        playerId = playerIdMap[interaction.user.id] || "Unknown";
 
-            default:
-              break;
-          }
-        }
+        await interaction.editReply({
+          content: `Operator rolling result: ${operator}`,
+          files: [await generateOperatorCard()],
+        });
 
-        else
-        {
-          opImgPath = `res/opsImg/${ interaction.options.getString ( "side" ) }/${ operator }.avif`
-        }
-  
-        switch ( interaction.user.id )
-        {
-          case "766278007169351721":
-            playerId = "Saiki.HARSH";
-            break;
-
-          case "851325296749707325":
-            playerId = "Hsure.HARSH";
-            break;
-
-            case "857821833760079923":
-            playerId = "Checkmate.HARSH";
-            break;
-
-          case "869873944356876299":
-            playerId = "fAiLEX.HARSH";
-            break;
-          
-            case "842536747082317885":
-              playerId = "BK.HARSH";
-              break;
-        
-            case "956936107923243138":
-              playerId = "Oh0wardO.HARSH";
-              break;
-
-          default:
-            playerId = "Unknown";
-            break;
-        }
-        
-        await interaction.editReply
-        (
-          {
-            content: `Operator rolling result: ${ operator }`,
-            files: [ await generateOperatorCard () ],
-          }
-        );
-
-        console.log ( `[INFO] Roll result: ${ operator }` );
-
+        console.log(`[INFO] Roll result: ${operator}`);
         break;
 
       case "team":
-        await interaction.reply ( `Rolling 5 operators for ${ interaction.options.getString ( "side" )?.toUpperCase () }` );
-        console.log ( `[INFO] User: "${ interaction.user.username }" rolling 5 operators for side "${ interaction.options.getString ( "side" )?.toUpperCase () }"\n` );
+        await interaction.reply(`Rolling 5 operators for ${side?.toUpperCase()}`);
+        console.log(`[INFO] User: "${interaction.user.username}" rolling 5 operators for side "${side?.toUpperCase()}"\n`);
 
-        const operators = new Set < any > ();
-        const players = new Set < any > ();
+        const operators = new Set<string>();
+        const players = new Set<string>();
 
-        while ( operators.size < 5 )
-        {
-          operators.add ( randomOperator ( interaction.options.getString ( "side" ) ) );
+        while (operators.size < 5) {
+          operators.add ( randomOperator ( side ) );
         }
 
-        while ( players.size < 5 )
-        {
-          players.add ( randomPlayer () );
+        while (players.size < 5) {
+          players.add(randomPlayer());
         }
 
-        // 將 players 和 operators 轉換為陣列
-        const playerArray = Array.from(players);
-        const operatorArray = Array.from(operators);
+        const resultList = Array.from(players).map((player, index) => {
+          const operator = Array.from(operators)[index];
+          return `<@${player}>: ${operator}`;
+        }).join("\n");
 
-        // 將玩家與幹員配對並格式化為字串
-        const resultList = playerArray.map
-        ( ( player, index ) =>
-          {
-            const operator = operatorArray [ index ];
-            return `<@${ player }>: ${ operator }`;
-          }
-        ).join( "\n" );
-
-        // 使用 interaction.reply 輸出結果
         await interaction.editReply(`Team operator rolling result:\n${resultList}`);
         console.log(`[INFO] Roll result:\n${resultList}`);
-
         break;
 
       default:
-        await interaction.reply ("Invalid mode selected.");
+        await interaction.reply("Invalid mode selected.");
         console.error("[ERROR] Invalid mode provided.");
-
         break;
     }
   }
 };
 
-function randomOperator ( side: any )
-{
-  let random_num;
+function randomOperator(side: any) {
+  let operator: string = "";
 
-  switch ( side )
-  {
+  switch (side) {
     case "atk":
-      random_num = Math.floor ( ( Math.random () * 10000 ) % atk_ops.length);
-      return atk_ops [ random_num ];
+      operator = atk_ops[Math.floor(Math.random() * atk_ops.length)];
+      break; // Add break to prevent fall-through
 
     case "def":
-      random_num = Math.floor ( ( Math.random () * 10000 ) % def_ops.length );
-      return def_ops [ random_num ];
+      operator = def_ops[Math.floor(Math.random() * def_ops.length)];
+      break; // Add break to prevent fall-through
 
     default:
+      console.error("[ERROR] Invalid side provided.");
       break;
   }
+
+  return operator;
 }
 
 function randomPlayer ()
