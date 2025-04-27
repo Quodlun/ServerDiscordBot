@@ -32,8 +32,9 @@ const config =
   mcssServerId: process.env.MCSS_SERVER_ID,
   serverIcon: "https://i.imgur.com/Ew7ugRv.png",
 
-  opBackgroundPath: "src\\data\\opsImg\\background.png",
-  opNameplatePath: "src\\data\\opsImg\\nameplate.png",
+  opBackgroundPath: "res/opsImg/cardBackground.png",
+  opNameplPath: "res/opsImg/nameplBackground.png",
+  gameBackgroundPath: "res/opsImg/gameBackground.png",
 }
 
 export default config

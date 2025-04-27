@@ -12,7 +12,7 @@ export default
 		
 	async execute ( _client:BotClient, interaction:ChatInputCommandInteraction)
 	{
-		var random_num;
+		let random_num;
 
     do
     {
