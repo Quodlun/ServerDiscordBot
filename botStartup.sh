@@ -1,3 +1,1 @@
-@echo off
-
-npm run autoStarts
+npm run autoStart
