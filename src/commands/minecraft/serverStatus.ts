@@ -66,7 +66,7 @@ export default
         )
 
       console.log ( replyMessage );
-      await interaction.reply ({ embeds: [ replyMessage ] });
+      await interaction.reply ( { embeds: [ replyMessage ] } );
     }
     
     catch ( error )
