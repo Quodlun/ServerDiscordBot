@@ -8,7 +8,6 @@
     "deploy": "node dist/deploy-commands.js",
     "clean": "rimraf dist",
     "test": "echo \"Error: no test specified\" && exit 1",
-
     "autoStart": "rimraf dist && tsc && node dist/deploy-commands.js && node dist/index.js"
   },
   "author": "",
@@ -19,7 +18,8 @@
     "axios": "^1.8.4",
     "discord.js": "^14.18.0",
     "dotenv": "^16.5.0",
-    "module-alias": "^2.2.3"
+    "module-alias": "^2.2.3",
+    "node-fetch": "^3.3.2"
   },
   "devDependencies": {
     "@types/module-alias": "^2.0.4",
