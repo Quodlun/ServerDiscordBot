@@ -2,6 +2,7 @@ import { BotClient } from "@client"
 import { ChatInputCommandInteraction } from "discord.js"
 import { SlashCommandBuilder } from "@discordjs/builders"
 import { fetchIp } from "@data/fetchIp"
+import config from "@config";
 
 export default
 {
@@ -11,21 +12,29 @@ export default
     
   async execute ( _client:BotClient, interaction:ChatInputCommandInteraction)
   {
-    try 
+    if ( interaction.user.id === config.discordOwnerId )
     {
-      console.log ( `[INFO] ${ interaction.user.tag } request fetching the ip.` );
-    
-      console.log ( "[INFO] Fetching external ip..." );
-      const ip = await fetchIp();
+      try 
+      {
+        console.log ( `[INFO] ${ interaction.user.tag } request fetching the ip.` );
       
-      console.log ( `[INFO] External ip fetched: ${ ip }` );
-      await interaction.reply ( `Server IP: ${ ip }` );
+        console.log ( "[INFO] Fetching external ip..." );
+        const ip = await fetchIp();
+        
+        console.log ( `[INFO] External ip fetched: ${ ip }` );
+        await interaction.reply ( `Server IP: ${ ip }` );
+      }
+
+      catch ( error )
+      {
+        console.error ( "Error fetching external IP:", error );
+        await interaction.reply ( "Error fetching external IP." );
+      }
     }
 
-    catch ( error )
+    else
     {
-      console.error ( "Error fetching external IP:", error );
-      await interaction.reply ( "Error fetching external IP." );
+      await interaction.reply ( "harsh-server.duckdns.org" );
     }
   }
 };
