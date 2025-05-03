@@ -22,7 +22,7 @@ export default
         const ip = await fetchIp();
         
         console.log ( `[INFO] External ip fetched: ${ ip }` );
-        await interaction.reply ( `Server IP: ${ ip }` );
+        await interaction.reply ( `Server IP: ${ ip } | ${ config.serverDdns }` );
       }
 
       catch ( error )
@@ -34,7 +34,7 @@ export default
 
     else
     {
-      await interaction.reply ( "harsh-server.duckdns.org" );
+      await interaction.reply ( `Server Address: ${ config.serverDdns }` );
     }
   }
 };

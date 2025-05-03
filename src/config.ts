@@ -23,6 +23,8 @@ const config =
   discordGuildId: process.env.DISCORD_GUILD_ID,
   discordOwnerId: process.env.DISCORD_OWNER_ID,
 
+  serverDdns: "harsh-server.duckdns.org",
+
   // serverIcon: "https://i.imgur.com/Ew7ugRv.png",
 
   opBackgroundPath: "res/opsImg/cardBackground.png",
