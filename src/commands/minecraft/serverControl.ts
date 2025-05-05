@@ -1,6 +1,5 @@
 import { BotClient } from '@client';
 import config from '@config';
-import { fetchIp } from '@data/fetchIp';
 import axios from 'axios';
 import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js'; 
 
