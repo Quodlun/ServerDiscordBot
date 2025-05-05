@@ -24,6 +24,9 @@ const config =
   discordOwnerId: process.env.DISCORD_OWNER_ID,
 
   serverIcon: "https://i.imgur.com/Ew7ugRv.png",
+  serverApiKey: process.env.MINECRAFT_SERVER_API_TOKEN,
+  serverId: process.env.MINECRAFT_SERVER_ID,
+  serverDdns: process.env.MINECRAFT_SERVER_DDNS,
 
   opBackgroundPath: "res/opsImg/cardBackground.png",
   opNameplPath: "res/opsImg/nameplBackground.png",
