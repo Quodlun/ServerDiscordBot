@@ -31,47 +31,12 @@ export default
 
     else
     {
-      await interaction.reply ( command )
+      await interaction.reply ( `Command: ${ command } send to https://${ config.serverDdns }:25560/api/v2/servers/${ config.serverId }` )
     }
   } 
 }
  
 /*
-export default
-{
-  data: new SlashCommandBuilder ()
-    .setName ( "svrctrl" )
-    .setDescription ( "Server console" )
-    
-    .addStringOption
-    ( option => option
-      .setName ( "action" )
-      .setDescription(  "What to do with the server?" )
-      .setRequired ( true )
-      .addChoices
-      (
-        {
-          name: "Start",
-          value: "start_server"
-        },
-
-        {
-          name: "Stop",
-          value: "stop_server"
-        },
-
-        {
-          name: "Kill",
-          value: "kill_server"
-        },
-
-        {
-          name: "Restart",
-          value: "restart_server"
-        }
-      )
-    ),
-
   async execute ( _client: BotClient, interaction: ChatInputCommandInteraction ) 
   {
     console.log ( `[INFO] User: ${ interaction.user.tag } require control server: ${ interaction.options.getString ( "action" ) }` );
