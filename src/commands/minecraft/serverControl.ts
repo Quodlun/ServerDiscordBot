@@ -1,7 +1,43 @@
 import { BotClient } from '@client';
 import config from '@config';
 import axios from 'axios';
-import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js'; 
+import { ChatInputCommandInteraction, SlashCommandBuilder } from 'discord.js';
+import https from 'https'; 
+
+async function controlServer ( action: string )
+{
+  try
+  {
+    const apiUrl = `https://${ config.serverDdns }:25560/api/v2/servers/${ config.serverId }/action/${ action }`;
+    console.log ( `[INFO] Sending request to ${ apiUrl }` );
+
+    const response = await axios.post  (
+      apiUrl, {},
+      {
+        headers:
+        {
+          "Authorization": `Bearer ${ config.serverApiKey }`,
+          "Content-Type": 'application/json',
+        },
+
+        httpsAgent: new https.Agent
+        (
+          {
+            rejectUnauthorized: false,
+          }
+        ),
+      }
+    );
+
+    return `${ response.status }! Successfully doing server control action: "${ action }" `;
+  }
+
+  catch ( error: string | any )
+  {
+    console.error ( 'Failed to control, ', error );
+    return `Failed to do the action. ${ error.response?.data?.message || error.message }`;
+  }
+}
 
 export default
 {
@@ -56,39 +92,4 @@ export default
       await interaction.reply ( message )
     }
   } 
-}
-
-async function controlServer ( action: string )
-{
-  try
-  {
-    const apiUrl = `https://${ config.serverDdns }:25560/api/v2/servers/${ config.serverId }/action/${ action }`;
-    console.log ( `[INFO] Sending request to ${ apiUrl }` );
-
-    const response = await axios.post  (
-      apiUrl, {},
-      {
-        headers:
-        {
-          "Authorization": `Bearer ${ config.serverApiKey }`,
-          "Content-Type": 'application/json',
-        },
-
-        httpsAgent: new ( require ( 'https' ).Agent )
-        (
-          {
-            rejectUnauthorized: false,
-          }
-        ),
-      }
-    );
-
-    return `${ await response.status }! Successfully doing server control action: "${ action }" `;
-  }
-
-  catch ( error: string | any )
-  {
-    console.error ( 'Failed to control, ', error );
-    return `Failed to do the action. ${ error.response?.data?.message || error.message }`;
-  }
 }
